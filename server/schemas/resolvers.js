@@ -1,9 +1,10 @@
-const { Book, User } = require("../models");
+const { AuthenticationError } = require('apollo-server-express');
+const {  User } = require("../models");
 const { signToken } = require('../utils/auth')
 
 const resolvers = {
   Query: {
-    me: async (_, _, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
         try {
           const user = await User.findOne({ _id: context.user._id });
@@ -23,8 +24,8 @@ const resolvers = {
               if (!user) {
                   throw new AuthenticationError('No user with this email');
               }
-              const password = await user.isCorrectPassword(password);
-              if(!password) {
+              const validPw = await user.isCorrectPassword(password);
+              if(!validPw) {
                   throw new AuthenticationError('Password Invalid');
               }
               const token = signToken(user);
@@ -43,7 +44,7 @@ const resolvers = {
          
      }
     },
-    savedBook: async (parent, { bookId }, context) => {
+    saveBook: async (parent, { bookToSave }, context) => {
      if( context.user) {
          try {
              const user = await User.findOneAndUpdate(
@@ -58,7 +59,7 @@ const resolvers = {
      }
      throw new AuthenticationError('Login please')
     },
-    deletebook: async (parent, { bookId }, context) => {
+    deleteBook: async (parent, { bookId }, context) => {
         if(context.user) {
             try {
                 const user = await User.findOneAndUpdate(

@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.5",
-    "graphql": "^15.5.1",
-    "mongoose": "^5.13.6",
-    "react-router-dom": "^5.2.0"
+    "graphql": "^15.5.1"
   }
 }
